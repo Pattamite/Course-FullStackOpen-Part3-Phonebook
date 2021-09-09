@@ -41,7 +41,9 @@ app.get("/info", (request, response, next) => {
         <p>${currentDate}</p>`
       );
     })
-    .catch((error) => {next(error);});
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.get("/api/persons", (request, response, next) => {
@@ -49,7 +51,9 @@ app.get("/api/persons", (request, response, next) => {
     .then((persons) => {
       response.json(persons);
     })
-    .catch((error) => {next(error);});
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.get("/api/persons/:id", (request, response, next) => {
@@ -57,7 +61,9 @@ app.get("/api/persons/:id", (request, response, next) => {
     .then((persons) => {
       response.json(persons);
     })
-    .catch((error) => {next(error);});
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.put("/api/persons/:id", (request, response, next) => {
@@ -72,11 +78,13 @@ app.put("/api/persons/:id", (request, response, next) => {
     number: body.number,
   };
 
-  Person.findByIdAndUpdate(request.params.id, newPerson, {new: true})
+  Person.findByIdAndUpdate(request.params.id, newPerson, { new: true })
     .then((updatePerson) => {
       response.json(updatePerson);
     })
-    .catch((error) => {next(error);});
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
@@ -84,7 +92,9 @@ app.delete("/api/persons/:id", (request, response, next) => {
     .then((result) => {
       response.status(204).end();
     })
-    .catch((error) => {next(error);});
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.post("/api/persons", (request, response, next) => {
@@ -99,23 +109,26 @@ app.post("/api/persons", (request, response, next) => {
     name: body.name,
     number: body.number,
   });
-  person.save()
+  person
+    .save()
     .then((savedPerson) => {
       response.json(savedPerson);
     })
-    .catch((error) => {next(error);});
+    .catch((error) => {
+      next(error);
+    });
 });
 
 function unknownEndpoint(request, response) {
-  response.status(404).send({error: 'unknown endpoint'});
+  response.status(404).send({ error: "unknown endpoint" });
 }
 app.use(unknownEndpoint);
 
 function errorHandler(error, request, response, next) {
   console.error(error.message);
 
-  if(error.name === 'CastError') {
-    return response.status(400).send({error: 'malformatted id'});
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
   }
 
   next(error);
